@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Areas of an ellipse</title>
+    <meta charset="UTF-8" />
+    <meta name="description" content="A tiny script to compute the sections of an ellipse" />
+    <meta name="keywords" content="javascript, math, ellipse, section, sector, sections, sectors, angle, theta, area, size, approximation" />
+    <meta name="author" content="Ikaros Kappler" />
+    <meta name="date" content="2018-03-13" />
+
+    <script src="js/Canvas.ellipse.polyfill.js"></script>
+    <script src="js/Math.sign.polyfill.js"></script>
+    <script src="js/M.js"></script>
+    <script src="js/Point.js"></script>
+    <script src="js/Ellipse.js"></script>
+    <script src="js/EllipticSector.js"></script>
+    <script src="js/WebColors.js"></script> 
+    <script src="js/main.js"></script>    
+  </head>
+  
+
+  <body>
+    a=<input type="number" id="a" value="250"> units<br/>
+    b=<input type="number" id="b" value="150"> units<br/>
+    theta<sub>0</sub>=<input type="number" id="theta0" value="0">°<br/>
+    theta<sub>1</sub>=<input type="number" id="theta1" value="60">° <input type="radio" id="byarea" name="type" value="byarea">
+    <label for="byarea">Compute theta<sub>1</sub> by area (recursive approximation)</label><br/>
+    Area=<input type="number" id="area" step="100" value="23199">units<sup>2</sup><input type="radio" id="byangle" name="type" value="byangle" checked>
+    <label for="byangle">Compute area by theta<sub>1</sub></label><br/>
+    <div style="background-color: #e0e0e0;">Bonus: make <input type="number" min="0" id="num_sections" value="5"> sections <button type="button" id="mksections">Go</button></div>
+    <div>Info: <span id="info"></span></div>
+    <canvas width="600" height="600" id="canvas">
+      Your browser does not support the &lt;canvas&gt; element.
+    </canvas>
+
+  </body>
+</html>

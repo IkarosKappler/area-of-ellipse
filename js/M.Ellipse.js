@@ -1,7 +1,7 @@
 /**
  * My very own little ellipse class.
  *
- * @requires Point Math.sign (polyfill for IE)
+ * @requires Point M
  *
  * @author  Ikaros Kappler
  * @date    2018-03-15
@@ -12,20 +12,20 @@
 // +-------------------------------------------------------------------
 // | Construct a new ellipse.
 // +------------------------------------------------
-var Ellipse = function(a,b,center) {
+M.Ellipse = function(a,b,center) {
 
-    if( typeof center === 'undefined' ) center = new Point();
+    if( typeof center === 'undefined' ) center = new M.Point();
     
     this.a = a;
     this.b = b;
     this.center = center;
-}
+};
 
 
 // +-------------------------------------------------------------------
 // | Compute the area in O(1).
 // +--------------------------------------------------
-Ellipse.prototype.computeArea = function() {
+M.Ellipse.prototype.computeArea = function() {
     return Math.PI*this.a*this.b;
 };
 
@@ -36,21 +36,19 @@ Ellipse.prototype.computeArea = function() {
 // | Note that t is NOT the elliptical angle, thus the angle of the vector
 // | from the origin the the computed points will be a different one.
 // +--------------------------------------------------
-Ellipse.prototype.getPointAtT = function( t ) {
-    return new Point( this.a*Math.cos(t), this.b*Math.sin(t) );
+M.Ellipse.prototype.getPointAtT = function( t ) {
+    return new M.Point( this.a*Math.cos(t), this.b*Math.sin(t) );
 };
 
 
 // +-------------------------------------------------------------------
 // | Get the point on the outline by the given angle (theta).
 // +--------------------------------------------------
-Ellipse.prototype.getPointAtTheta = function( theta ) {
+M.Ellipse.prototype.getPointAtTheta = function( theta ) {
     // http://mathworld.wolfram.com/Ellipse-LineIntersection.html
 
-
-
     // Convert this ellipse to a circle
-    var circular = new Ellipse( Math.max(this.a,this.b), Math.max(this.a, this.b) );
+    var circular = new M.Ellipse( Math.max(this.a,this.b), Math.max(this.a, this.b) );
     /*
     var ellipticPoint = circular.getPointAtT( theta );
     var linePoint = new Point( ellipticPoint.x * (circular.a/this.a),
@@ -66,7 +64,7 @@ Ellipse.prototype.getPointAtTheta = function( theta ) {
     // Imagine any line defined by the angle theta and find the intersection.
     var linePoint = circular.getPointAtT( theta );
     return this.getCentralLineIntersection( linePoint );
-}
+};
 
 
 //Ellipse.prototype.getPointAtCircularTheta = function
@@ -77,19 +75,19 @@ Ellipse.prototype.getPointAtTheta = function( theta ) {
 // |
 // | Not that this point is not unique. There is a second one at (-x,-y).
 // +--------------------------------------------------
-Ellipse.prototype.getCentralLineIntersection = function( point ) {
+M.Ellipse.prototype.getCentralLineIntersection = function( point ) {
     // http://mathworld.wolfram.com/Ellipse-LineIntersection.html
     
     var base = (this.a*this.b) / Math.sqrt( this.a*this.a * point.y*point.y + this.b*this.b * point.x*point.x );
     if( point.y < 0 ) {
 	console.log( JSON.stringify(point) );
-	return new Point(  (base * point.x),
-			   (base * point.y)
-			);
+	return new M.Point(  (base * point.x),
+			     (base * point.y)
+			  );
     } else {
-	return new Point(  base * point.x,
-			   base * point.y
-			);
+	return new M.Point(  base * point.x,
+			     base * point.y
+			  );
     }
 };
 
@@ -97,7 +95,7 @@ Ellipse.prototype.getCentralLineIntersection = function( point ) {
 // +-------------------------------------------------------------------
 // | Split this ellipse into n elliptic sectors.
 // +--------------------------------------------------
-Ellipse.prototype.sectorize = function( n, startAt ) {
+M.Ellipse.prototype.sectorize = function( n, startAt ) {
 
     if( typeof startAt === 'undefined' ) startAt = 0.0;
     
@@ -124,7 +122,7 @@ Ellipse.prototype.sectorize = function( n, startAt ) {
 	//console.log( 'theta_raw_deg=' + (theta/Math.PI*180) + ', theta_deg=' + Ellipse.Helpers.wrapTo2Pi(theta)/Math.PI*180 + ', circularAngle=' + (circularAngle/Math.PI*180) );
 	//theta = Ellipse.Helpers.wrapTo2Pi(theta);
 
-	sectors.push( new EllipticSector(this, theta_old, theta) );
+	sectors.push( new M.EllipticSector(this, theta_old, theta) );
 	
 	circularAngle += step;
 	theta_old = theta;
@@ -134,7 +132,7 @@ Ellipse.prototype.sectorize = function( n, startAt ) {
 }
 
 
-Ellipse.prototype.scale = function( scaleA, scaleB ) {
+M.Ellipse.prototype.scale = function( scaleA, scaleB ) {
     this.a *= scaleA;
     this.b *= scaleB;
     return this;
@@ -142,7 +140,7 @@ Ellipse.prototype.scale = function( scaleA, scaleB ) {
 
 
 /*
-Ellipse.Helpers = {
+M.Ellipse.Helpers = {
     wrapTo2Pi : function(a) {
 	a = a % (Math.PI*2);
 	if( a < 0 )
@@ -160,7 +158,7 @@ Ellipse.Helpers = {
 // Self test
 if( true ) {
 
-    var e = new Ellipse(250,150);
+    var e = new M.Ellipse(250,150);
     console.log( JSON.stringify(e) );
 
 }

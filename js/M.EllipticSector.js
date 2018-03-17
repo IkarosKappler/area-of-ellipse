@@ -7,17 +7,17 @@
  **/
 
 
-var EllipticSector = function( ellipse, theta0, theta1 ) {
+M.EllipticSector = function( ellipse, theta0, theta1 ) {
     this.ellipse = ellipse;
     this.theta0 = theta0;
     this.theta1 = theta1;
 };
 
-EllipticSector.prototype.getTheta = function() {
+M.EllipticSector.prototype.getTheta = function() {
     return this.theta1-this.theta0;
 }
 
-EllipticSector.prototype.computeArea = function() {
+M.EllipticSector.prototype.computeArea = function() {
     var theta = this.getTheta();
     var a = this.ellipse.a;
     var b = this.ellipse.b;

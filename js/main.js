@@ -84,8 +84,8 @@
 	// Clear info
 	setInfo('');
 	
-	var ellipse = new Ellipse( getA(), getB() );
-	var ellipticSector = new EllipticSector( ellipse, getTheta0(), getTheta1() );
+	var ellipse = new M.Ellipse( getA(), getB() );
+	var ellipticSector = new M.EllipticSector( ellipse, getTheta0(), getTheta1() );
 	
 	// 'byarea' or 'byangle'
 	var type = getType('type'); 
@@ -205,7 +205,7 @@
     function makeEllipticSectors() {
 	clearCanvas();
 	var numSectors = getNumSections();
-	var ellipse = new Ellipse( getA(), getB() );
+	var ellipse = new M.Ellipse( getA(), getB() );
 
 	var sect = ellipse.sectorize( numSectors, 0 );
 	console.log( JSON.stringify(sect.sectors) );
@@ -224,7 +224,7 @@
 	var sectors = sect.sectors;
 	var points  = sect.points;
 	
-	var circular = new Ellipse( Math.max(ellipse.a,ellipse.b), Math.max(ellipse.a,ellipse.b) );
+	var circular = new M.Ellipse( Math.max(ellipse.a,ellipse.b), Math.max(ellipse.a,ellipse.b) );
 	var theta_old = 0; 
 	for( var i = 0; i < sectors.length; i++ ) {
 
@@ -235,7 +235,7 @@
 	    // -- as elliptic (!) angles, not circular angles. We need to translate our
 	    // -- angles into elliptic ones to draw them correctly.
 	    // Scale the current point so it's located on the circle	    
-	    var p1 = new Point( p.x * (circular.a/ellipse.a), p.y * (circular.b/ellipse.b) );
+	    var p1 = new M.Point( p.x * (circular.a/ellipse.a), p.y * (circular.b/ellipse.b) );
 	    // Compute the new angle
 	    var theta1 = M.wrapTo2Pi( M.atanYX( p1.x, p1.y ) );
 	    // And locate the new projected point on the ellipse
@@ -259,8 +259,8 @@
 	//var circular = new Ellipse( Math.max(ellipse.a,ellipse.b), Math.max(ellipse.a,ellipse.b) );
 	for( var i = 0; i < sectors.length; i++ ) {
 
-	    var sector = sectors[i];
-	    var p = ellipse.getPointAtTheta( sector.theta1 );
+	    //var sector = sectors[i];
+	    //var p = ellipse.getPointAtTheta( sector.theta1 );
 	    
 	    console.log( 'sector['+i+'] theta0=' + sectors[i].theta0*RAD2DEG + ', theta1=' + sectors[i].theta1*RAD2DEG );	    
 	    
@@ -268,11 +268,9 @@
 	    ctx.fillStyle = 'black';
 	    ctx.fillText(''+i, center.x+points[i].x+5, center.y+points[i].y );
 	    
-	    drawLine( center.x, center.y, center.x+p.x, center.y+p.y, 'green' );
-	    ctx.fillStyle = 'green';
-	    ctx.fillText(''+i, center.x+p.x-5, center.y+p.y );
-	    //drawLine( center.x, center.y, center.x+points[i].x, center.y+points[i].y, 'black' );
-
+	    //drawLine( center.x, center.y, center.x+p.x, center.y+p.y, 'green' );
+	    //ctx.fillStyle = 'green';
+	    //ctx.fillText(''+i, center.x+p.x-5, center.y+p.y );
 	}
     }
 

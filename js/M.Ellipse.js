@@ -46,28 +46,12 @@ M.Ellipse.prototype.getPointAtT = function( t ) {
 // +--------------------------------------------------
 M.Ellipse.prototype.getPointAtTheta = function( theta ) {
     // http://mathworld.wolfram.com/Ellipse-LineIntersection.html
-
     // Convert this ellipse to a circle
     var circular = new M.Ellipse( Math.max(this.a,this.b), Math.max(this.a, this.b) );
-    /*
-    var ellipticPoint = circular.getPointAtT( theta );
-    var linePoint = new Point( ellipticPoint.x * (circular.a/this.a),
-			       ellipticPoint.y * (circular.b/this.a)
-			     );
-
-    
-    var circularIntersection = circular.getCentralLineIntersection( linePoint );
-    var circularTheta = M.atanYX( circularIntersection.x, circularIntersection.y );
-    return this.getPointAtT( circularTheta );
-    */
-
     // Imagine any line defined by the angle theta and find the intersection.
     var linePoint = circular.getPointAtT( theta );
     return this.getCentralLineIntersection( linePoint );
 };
-
-
-//Ellipse.prototype.getPointAtCircularTheta = function
 
 
 // +-------------------------------------------------------------------
@@ -112,18 +96,10 @@ M.Ellipse.prototype.sectorize = function( n, startAt ) {
     for( var i = 0; i < n; i++ ) {
 	var point = this.getPointAtT( circularAngle );
 	points.push( point );
-
 	// Compute the angle for the point (x,y) on the outline.
 	// Remember: atan2 begins on top and also returns negative values in [-PI,PI]
-	//var theta = Math.atan2( point.x, point.y );
-	//theta = Ellipse.Helpers.atan2To2Pi(theta);
 	var theta = M.wrapTo2Pi( M.atanYX(point.x,point.y) );
-	
-	//console.log( 'theta_raw_deg=' + (theta/Math.PI*180) + ', theta_deg=' + Ellipse.Helpers.wrapTo2Pi(theta)/Math.PI*180 + ', circularAngle=' + (circularAngle/Math.PI*180) );
-	//theta = Ellipse.Helpers.wrapTo2Pi(theta);
-
-	sectors.push( new M.EllipticSector(this, theta_old, theta) );
-	
+	sectors.push( new M.EllipticSector(this, theta_old, theta) );	
 	circularAngle += step;
 	theta_old = theta;
     }
@@ -131,27 +107,12 @@ M.Ellipse.prototype.sectorize = function( n, startAt ) {
     return { points : points, sectors : sectors };
 }
 
-
+/*
 M.Ellipse.prototype.scale = function( scaleA, scaleB ) {
     this.a *= scaleA;
     this.b *= scaleB;
     return this;
 };
-
-
-/*
-M.Ellipse.Helpers = {
-    wrapTo2Pi : function(a) {
-	a = a % (Math.PI*2);
-	if( a < 0 )
-	    a = Math.PI*2 + a;
-	return a;
-    },
-    atan2To2Pi : function(a) {
-	if( a < 0 ) a = Math.PI-a;
-	return a - Math.PI/2.0;
-    }
-}
 */
 
 

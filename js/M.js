@@ -1,9 +1,10 @@
 /**
  * A collection of useful math functions, utils and classes.
  *
- * @author  Ikaros Kappler
- * @date    2018-03-16
- * @version 1.0.0
+ * @author   Ikaros Kappler
+ * @date     2018-03-16
+ * @modified 2018-03-19 Added DEG2RAD and RAD2DEG.
+ * @version  1.1.0
  **/
 
 
@@ -13,6 +14,22 @@
 var M = M || {};
 
 
+// +--------------------------------------------------------------------
+// | The conversion constant for transforming degrees to radians.
+// +------------------------------------------------
+M.DEG2RAD = Math.PI/180;
+
+
+// +--------------------------------------------------------------------
+// | The conversion constant for transforming radians to degrees.
+// +------------------------------------------------
+M.RAD2DEG = 180/Math.PI;
+
+
+// +--------------------------------------------------------------------
+// | Two Pi.
+// +------------------------------------------------
+M.TWOPI = Math.PI*2;
 
 
 // +--------------------------------------------------------------------
@@ -51,5 +68,5 @@ M.atanYX = function( x, y ) {
 // | @return 
 // +------------------------------------------------
 M.wrapTo2Pi = function( a ) {
-    return (a > 0 ? (Math.PI*2 - a) : -a);
+    return M.TWOPI - (a > 0 ? (Math.PI*2 - a) : -a);
 };

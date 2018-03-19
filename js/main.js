@@ -15,7 +15,7 @@
  *                    
  *
  *
- * @requires M, Ellipse, EllipticSector, WebColors.
+ * @requires M, M.Ellipse, M.EllipticSector, WebColors.
  * 
  * @author  Ikaros Kappler a.k.a. Ika Henning Diesenberg
  * @date    2018-03-13
@@ -49,6 +49,7 @@
     function getA() { return parseFloat(inputA.value); }
     function getB() { return parseFloat(inputB.value); }
     function getTheta0() { return parseFloat(inputTheta0.value)/180*Math.PI; }
+    function setTheta0(angle) { inputTheta0.value = angle/Math.PI*180; }
     function getTheta1() { return parseFloat(inputTheta1.value)/180*Math.PI; }
     function setTheta1(angle) { inputTheta1.value = angle/Math.PI*180; }
     function getType() { return getRadioValue('type'); }
@@ -56,7 +57,7 @@
     function setArea(area) { inputArea.value = area; }
     function getNumSections() { return parseFloat(inputNumSections.value); }
     
-    // OK, this function would be more elegant with jQuery.
+    // I admit, this function would be more elegant with jQuery.
     function getRadioValue(name) {
 	var radios = document.getElementsByTagName('input');
 	for (var i=0, len=radios.length; i<len; i++) {
@@ -100,13 +101,14 @@
 	    var desiredArea = getArea();
 	    // Check if area is out of bounds
 	    if( desiredArea < 0 || desiredArea > computeAreaBetween(a,b,0,Math.PI*2) ) {
-		setInfo('Your desired area is larger then the whole ellipse.');
+		setInfo('Your desired area is larger than the whole ellipse.');
 		return;
 	    }
 	    // Stop the recursion after 100 iterations or when the area was approximated close to 10 square pixels.
 	    var angle = approximateAngle( ellipse.a, ellipse.b, ellipticSector.theta0, 0, Math.PI*2, desiredArea, 4, 100 ); 
 	    setTheta1(angle);
-	    draw( ellipse.a, ellipse.b, ellipse.theta0, ellipse.theta0+angle, angle );	    
+	    //draw( ellipse.a, ellipse.b, ellipse.theta0, ellipse.theta0+angle, angle );
+	    draw( ellipse.a, ellipse.b, ellipticSector.theta0, angle, ellipticSector.theta0-angle );
 	} else {
 	    console.warn('Unrecognized calculation type: ' + type );
 	}
@@ -114,13 +116,13 @@
 
     
     // +-------------------------------------------------------------------------
-    // | This is just a straightforward method for computing the elliptic area (a section).
+    // | This is just a straightforward method for computing the area of
+    // | an elliptic sector.
     // |
     // | See http://mathworld.wolfram.com/Ellipse.html
     // |     andhttp://keisan.casio.com/exec/system/1343722259
     // | for the math.
     // +-----------------------------------------------------
-    // DEPRECATED
     function computeAreaBetween(a,b,theta0,theta1) {
 	var theta = Math.abs(theta1-theta0);
 	var area =
@@ -147,6 +149,8 @@
     // |
     // | @return The approximated angle theta1 so that the sectional elliptic area between startAngle and theta1 has the size of the given area.
     // +-----------------------------------------------------
+    // @DEPRECATED There is a much more efficient way to do this.
+    
     function approximateAngle(a,b,startAngle,lowerAngle,upperAngle,desiredArea,eps,maxIterations) {
 
 	var lowerArea = computeAreaBetween(a,b,startAngle,lowerAngle);
@@ -175,43 +179,19 @@
 		return approximateAngle(a,b,startAngle,lowerAngle,lowerAngle+(upperAngle-lowerAngle)/2,desiredArea,eps,maxIterations-1);
 	}
     }
-
+    
 
     
     // +-------------------------------------------------------------------------
     // | This funcion splits the ellipse into n sectors, all having the same area.
     // +-----------------------------------------------------
-    // @DEPRECATED This was my first recursive approximation approach.
-    /* function makeEllipticSectors() {
-	clearCanvas();
-	var a = getA();
-	var b = getB();
-	var numSections = getNumSections();
-	var ellipticArea = computeAreaBetween(a,b,0,Math.PI*2);
-	var sectionalArea = ellipticArea/numSections;
-
-	var theta0 = 0;
-	var theta1;
-	for( var i = 0; i < numSections; i++ ) {
-	    theta1 = approximateAngle(a,b,theta0,theta0,Math.PI*2,sectionalArea,4,100);
-	    console.log('theta1='+ (theta1/Math.PI*180) );
-	    fillEllipticSector(a,b,theta0,theta1,randomColor());
-	    theta0 = theta1;
-	}
-
-	drawEllipse(a,b);
-    }
-    */
     function makeEllipticSectors() {
 	clearCanvas();
 	var numSectors = getNumSections();
 	var ellipse = new M.Ellipse( getA(), getB() );
-
 	var sect = ellipse.sectorize( numSectors, 0 );
-	console.log( JSON.stringify(sect.sectors) );
 	fillEllipticSectors( ellipse, sect );
 	drawEllipticSectors( ellipse, sect );
-
 	drawEllipse( ellipse.a, ellipse.b );
     }
 
@@ -404,6 +384,24 @@
 
 	compute();
 
+	new MouseHandler(canvas)
+	    .drag( function(e) {
+		compute(); // =redraw
+		
+		var lineX = e.params.pos.x - center.x;
+		var lineY = e.params.pos.y - center.y;
+		var angle = M.wrapTo2Pi( M.atanYX(lineX,lineY) );
+		//var angle = M.atanYX(lineX,lineY) * M.RAD2DEG;
+		if( e.params.leftButton ) setTheta1( angle );
+		else if( e.params.middleButton ) setTheta0( angle );
+		
+		drawLine( e.params.mouseDownPos.x, e.params.mouseDownPos.y, e.params.pos.x, e.params.pos.y, 'pink' );
+		drawLine( center.x, center.y, e.params.pos.x, e.params.pos.y, 'blue' );
+	    } )
+	    .mouseup( function(e) {
+		compute(); // redraw (clear lines)
+	    } );
+	
 	// Tell the garbage collector we're done with initialization.
 	delete init;
     }

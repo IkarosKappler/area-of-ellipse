@@ -236,21 +236,11 @@
 	var sectors = sect.sectors;
 	var points  = sect.points;
 	console.log( JSON.stringify(sectors) );
-	//var circular = new Ellipse( Math.max(ellipse.a,ellipse.b), Math.max(ellipse.a,ellipse.b) );
 	for( var i = 0; i < sectors.length; i++ ) {
-
-	    //var sector = sectors[i];
-	    //var p = ellipse.getPointAtTheta( sector.theta1 );
-	    
-	    console.log( 'sector['+i+'] theta0=' + sectors[i].theta0*RAD2DEG + ', theta1=' + sectors[i].theta1*RAD2DEG );	    
-	    
+	    //console.log( 'sector['+i+'] theta0=' + sectors[i].theta0*RAD2DEG + ', theta1=' + sectors[i].theta1*RAD2DEG );	    
 	    drawLine( center.x, center.y, center.x+points[i].x, center.y+points[i].y, 'black' )
 	    ctx.fillStyle = 'black';
 	    ctx.fillText(''+i, center.x+points[i].x+5, center.y+points[i].y );
-	    
-	    //drawLine( center.x, center.y, center.x+p.x, center.y+p.y, 'green' );
-	    //ctx.fillStyle = 'green';
-	    //ctx.fillText(''+i, center.x+p.x-5, center.y+p.y );
 	}
     }
 
@@ -389,7 +379,8 @@
 		compute(); // =redraw
 		
 		var lineX = e.params.pos.x - center.x;
-		var lineY = e.params.pos.y - center.y;
+		//var lineY = e.params.pos.y - center.y;
+		var lineY = center.y - e.params.pos.y;
 		var angle = M.wrapTo2Pi( M.atanYX(lineX,lineY) );
 		//var angle = M.atanYX(lineX,lineY) * M.RAD2DEG;
 		if( e.params.leftButton ) setTheta1( angle );

@@ -68,5 +68,6 @@ M.atanYX = function( x, y ) {
 // | @return 
 // +------------------------------------------------
 M.wrapTo2Pi = function( a ) {
-    return M.TWOPI - (a > 0 ? (Math.PI*2 - a) : -a);
+    //return M.TWOPI - (a > 0 ? (Math.PI*2 - a) : -a);
+    return (a > 0 ? (Math.PI*2 - a) : -a);
 };

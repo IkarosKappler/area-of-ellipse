@@ -8,7 +8,11 @@
 }
 
 .row div:nth-child(1) {
-    width : 75px;
+    width : 10%;
+}
+
+.row div:nth-child(2) {
+    width : 90%;
 }
 
 .begin {

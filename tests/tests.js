@@ -9,6 +9,13 @@
 
 (function() {
 
+    // +------------------------------------------------------------------------------
+    // | Print the result on the test page.
+    // |
+    // | @param status:String The text status.
+    // | @param msg:String The status message (a description of what's happening)
+    // | @param optopns:Object { class:String } An optional CSS class list to use.
+    // +------------------------------------------------
     function track( status, msg, options ) {
 	var row = document.createElement('DIV');
 	if( options && options['class'] )
@@ -26,9 +33,11 @@
 
 	document.getElementById('testresults').appendChild( row );
     }
-    
-    // This test code snippet is requied as described in the klugjs docs
-    //    https://bitbucket.org/zserge/klud.js/
+
+    // +------------------------------------------------------------------------------
+    // | This test code snippet is requied as described in the klugjs docs
+    // |   https://bitbucket.org/zserge/klud.js/
+    // +-----------------------------------------------
     test(function(e, test, msg) {
 	switch (e) {
         case 'begin':
@@ -48,7 +57,11 @@
             break;
 	}
     });
+
     
+    // +------------------------------------------------------------------------------
+    // | Runs all tests.
+    // +-----------------------------------------------
     function runAll() {
 	var ellipse = new M.Ellipse(250,150);
 	test('Test if a full sector equals the full ellipse area', function() {
@@ -71,6 +84,7 @@
 	
 	
     }
+
     
     function init() {
 	console.log('init');

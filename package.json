@@ -1,0 +1,31 @@
+{
+  "name": "area-of-ellipse",
+  "version": "1.0.0",
+  "description": "Compute the areas and angles of different elliptic sectors.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IkarosKappler/area-of-ellipse.git"
+  },
+  "keywords": [
+    "math",
+    "geometry",
+    "ellipse",
+    "elliptic",
+    "sectors",
+    "angle",
+    "theta"
+  ],
+  "author": "Ikaros Kappler",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/IkarosKappler/area-of-ellipse/issues"
+  },
+  "homepage": "https://github.com/IkarosKappler/area-of-ellipse#readme",
+  "dependencies": {
+    "kludjs": "^1.0.0"
+  }
+}

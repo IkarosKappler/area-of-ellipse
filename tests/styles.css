@@ -1,0 +1,33 @@
+/**
+ * @author Ikaros Kappler
+ * @date   2018-03-25
+ **/
+
+.inline {
+    display : inline-block;
+}
+
+.row div:nth-child(1) {
+    width : 75px;
+}
+
+.begin {
+    
+}
+
+.end {
+
+}
+
+.pass {
+    color : green;
+}
+
+.fail {
+    color : red;
+}
+
+.except {
+    color : orange;
+}
+	
